@@ -19,4 +19,7 @@
 
 body {
   background-color: var(--bg-color);
+
+  scrollbar-color: var(--color-gray-200) transparent;
+  scrollbar-width: thin;
 }

@@ -7,6 +7,7 @@
   --color-gray-700-opacity: oklch(0.57 0 0 / 80%);
   --color-light-blue: oklch(0.68 0.1335 267.94);
   --color-light-red: oklch(0.68 0.2105 24.73);
+  --color-light-green: oklch(0.7 0.1636 147.91);
 
   --border-1: {
     border-style: var(--tw-border-style);

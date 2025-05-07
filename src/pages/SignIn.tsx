@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { FormCard } from "../components/FormCard";
 
 export const SignIn = () => {
   const [inputValue, setInputValue] = useState<string>("");
@@ -18,9 +19,7 @@ export const SignIn = () => {
 
   return (
     <main className="h-screen flex justify-center items-center">
-      <div className="w-xl h-fit p-6 rounded-2xl border border-gray-200 bg-white flex flex-col">
-        <h1 className="text-(length:--title-size) font-bold">Welcome to CodeLeap network!</h1>
-
+      <FormCard title="Welcome to CodeLeap network!">
         <Input
           label="Please enter your username"
           id="username"
@@ -34,10 +33,13 @@ export const SignIn = () => {
         <Button
           disabled={inputValue === ""}
           onClick={handleSignIn}
+          variant="contained"
+          bg="bg-light-blue"
+          color="text-white"
         >
           ENTER
         </Button>
-      </div>
+      </FormCard>
     </main>
   )
 }

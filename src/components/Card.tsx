@@ -2,10 +2,13 @@ import { ReactNode } from "react"
 
 import * as icon from "../assets/icons"
 
+import { PropsModal } from "../pages/Home";
+
 type CardProps = {
   children: ReactNode;
   title: string;
   controls?: boolean;
+  openModal: ({ property }: PropsModal) => void
 }
 
 export const Card = ({ ...props }: CardProps) => (
@@ -17,11 +20,11 @@ export const Card = ({ ...props }: CardProps) => (
 
       {props.controls && (
         <div className="flex items-center gap-6">
-          <span className="cursor-pointer">
+          <span className="cursor-pointer" onClick={() => props.openModal({ property: "delete" })}>
             <icon.TrashCan />
           </span>
 
-          <span className="cursor-pointer">
+          <span className="cursor-pointer" onClick={() => props.openModal({ property: "edit" })}>
             <icon.Edit />
           </span>
         </div>

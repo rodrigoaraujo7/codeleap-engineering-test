@@ -5,6 +5,7 @@
   --color-gray-600: oklch(0.68 0 0);
   --color-gray-700: oklch(0.57 0 0);
   --color-light-blue: oklch(0.68 0.1335 267.94);
+  --custom-grid-cols: 1fr 768px 1fr;
 }
 
 :root {

@@ -32,7 +32,7 @@ export const SignIn = () => {
         />
 
         <Button
-          className={inputValue === "" ? 'grayscale-75' : ''}
+          disabled={inputValue === ""}
           onClick={handleSignIn}
         >
           ENTER

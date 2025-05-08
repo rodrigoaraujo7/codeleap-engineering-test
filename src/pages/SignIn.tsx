@@ -14,7 +14,9 @@ export const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault()
+
     if (username === "") return
 
     return navigate("/")
@@ -22,27 +24,29 @@ export const SignIn = () => {
 
   return (
     <main className="h-screen flex justify-center items-center">
-      <FormCard title="Welcome to CodeLeap network!">
-        <Input
-          label="Please enter your username"
-          id="username"
-          type="text"
-          placeholder="John doe"
-          className="mt-6 mb-4"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+      <form onSubmit={handleSignIn}>
+        <FormCard title="Welcome to CodeLeap network!">
+          <Input
+            label="Please enter your username"
+            id="username"
+            type="text"
+            placeholder="John doe"
+            className="mt-6 mb-4"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <Button
-          disabled={username === ""}
-          onClick={handleSignIn}
-          variant="contained"
-          bg="bg-light-blue"
-          color="text-white"
-        >
-          ENTER
-        </Button>
-      </FormCard>
+          <Button
+            disabled={username === ""}
+            onClick={handleSignIn}
+            variant="contained"
+            bg="bg-light-blue"
+            color="text-white"
+          >
+            ENTER
+          </Button>
+        </FormCard>
+      </form>
     </main>
   )
 }

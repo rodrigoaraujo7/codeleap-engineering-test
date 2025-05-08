@@ -23,6 +23,7 @@ export const Home = () => {
     username
   } = useAuthProviderContext();
 
+
   const api = "https://dev.codeleap.co.uk/careers/";
 
   const handleNewPost = () => {
@@ -65,7 +66,7 @@ export const Home = () => {
       .finally(() => {
         console.log("Axios Get");
       })
-  }, [])
+  }, [username])
 
   return (
     <Main>

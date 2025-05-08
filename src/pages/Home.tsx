@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Main } from "../layout/Main"
 
@@ -7,15 +7,71 @@ import { Card } from "../components/Card"
 import { Input } from "../components/Input"
 import { TextArea } from "../components/Textarea"
 
+import { useAuthProviderContext } from "../store/AuthProvider"
+
+import axios from "axios"
+
+import { TPost } from "../types/Post"
+
 export const Home = () => {
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [inputTitleValue, setInputTitleValue] = useState<string>("");
   const [inputContentValue, setInputContentValue] = useState<string>("");
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const {
+    username
+  } = useAuthProviderContext();
+
+  const api = "https://dev.codeleap.co.uk/careers/";
+
+  const handleNewPost = () => {
+    if (isFetching) return
+
+    setIsFetching(true)
+
+    const newPost: TPost = {
+      username,
+      title: inputTitleValue,
+      content: inputContentValue,
+      created_datetime: new Date().toISOString(),
+      author_ip: "",
+    };
+
+    axios.post(api, newPost)
+      .then((response) => {
+        console.log(response)
+        setPosts(prev => [response.data, ...prev])
+        setInputContentValue("")
+        setInputTitleValue("")
+      })
+      .catch((error) => {
+        console.log(" 🔴 POST ERROR:" + error)
+      })
+      .finally(() => {
+        console.log("Axios Post");
+        setIsFetching(false)
+      })
+  }
+
+  useEffect(() => {
+    axios.get(api)
+      .then((response) => {
+        setPosts(response.data.results)
+      })
+      .catch((error) => {
+        console.log(" 🔴 GET ERROR:" + error)
+      })
+      .finally(() => {
+        console.log("Axios Get");
+      })
+  }, [])
 
   return (
     <Main>
       <div className="p-6 rounded-2xl border-1 border-gray-600 flex flex-col gap-6">
         <h1 className="text-(length:--title-size) font-bold text-black">
-          What’s on your mind?
+          What's on your mind?
         </h1>
 
         <Input
@@ -39,28 +95,29 @@ export const Home = () => {
           variant="contained"
           bg="bg-light-blue"
           disabled={(inputTitleValue === "" || inputContentValue === "")}
+          onClick={handleNewPost}
         >
-          Create
+          {isFetching ? "Loading ..." : "Create"}
         </Button>
       </div>
 
-      <Card title="My First Post at CodeLeap Network!" controls>
-        <div className="flex justify-between items-center gap-4">
-          <h1 className="text-lg font-bold text-gray-700">
-            @user
-          </h1>
+      {posts.map((post, index) => (
+        <Card title={post.title} controls key={index}>
+          <div className="flex justify-between items-center gap-4">
+            <h1 className="text-lg font-bold text-gray-700">
+              @{post.username}
+            </h1>
 
-          <span className="text-lg font-normal text-gray-700">
-            25 minutes agos
-          </span>
-        </div>
+            <span className="text-lg font-normal text-gray-700">
+              25 minutes agos
+            </span>
+          </div>
 
-        <p className="text-lg font-normal text-black mt-4">
-          Curabitur suscipit suscipit tellus. Phasellus consectetuer vestibulum elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas egestas arcu quis ligula mattis placerat. Duis vel nibh at velit scelerisque suscipit.
-          <br /><br />
-          Duis lobortis massa imperdiet quam. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Fusce a quam. Nullam vel sem. Nullam cursus lacinia erat.
-        </p>
-      </Card>
+          <p className="text-lg font-normal text-black mt-4">
+            {post.content}
+          </p>
+        </Card>
+      ))}
     </Main>
   )
 }

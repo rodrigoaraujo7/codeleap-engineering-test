@@ -5,6 +5,7 @@ import { FormCard } from "./FormCard";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { TextArea } from "./Textarea";
+import { Spinner } from "./Spinner";
 
 import axios from "axios";
 import { toast } from "react-toastify"
@@ -139,7 +140,7 @@ const DeleteModal = ({ ...props }: ModalProps) => {
             bg="bg-light-red"
             onClick={deletePost}
           >
-            {isDeleting ? "Loading ..." : "Delete"}
+            {isDeleting ? <Spinner color="text-white" /> : "Delete"}
           </Button>
         </div>
       </FormCard>
@@ -222,7 +223,7 @@ export const EditModal = ({ ...props }: ModalProps) => {
               disabled={(inputTitleValue === "" || inputContentValue === "")}
               onClick={editPost}
             >
-              {isEditing ? "Loading ..." : "Save"}
+              {isEditing ? <Spinner color="text-white" /> : "Save"}
             </Button>
           </div>
         </div>

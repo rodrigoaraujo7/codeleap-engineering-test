@@ -6,6 +6,7 @@ import { Button } from "../components/Button"
 import { Card } from "../components/Card"
 import { Input } from "../components/Input"
 import { TextArea } from "../components/Textarea"
+import { Spinner } from "../components/Spinner"
 
 import { useAuthProviderContext } from "../store/AuthProvider"
 import { usePostProviderContext } from "../store/PostProvider"
@@ -92,7 +93,7 @@ export const Home = () => {
           disabled={(inputTitleValue === "" || inputContentValue === "")}
           onClick={handleNewPost}
         >
-          {isPosting ? "Loading ..." : "Create"}
+          {isPosting ? <Spinner color="text-white" /> : "Create"}
         </Button>
       </div>
 

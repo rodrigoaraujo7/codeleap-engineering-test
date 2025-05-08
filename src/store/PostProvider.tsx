@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
-import { TPost } from "../types/Post";
 import axios from "axios";
+
+import { TPost } from "../types/Post";
 
 type PostProviderProps = {
   children: ReactNode

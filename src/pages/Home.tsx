@@ -21,14 +21,11 @@ export const Home = () => {
   const [isPosting, setIsPosting] = useState<boolean>(false);
 
   const {
-    username
+    userIp, username
   } = useAuthProviderContext();
 
   const {
-    posts,
-    setPosts,
-    isFetching,
-    api
+    posts, setPosts, isFetching, api
   } = usePostProviderContext();
 
   const handleNewPost = () => {
@@ -42,12 +39,11 @@ export const Home = () => {
       title: inputTitleValue,
       content: inputContentValue,
       created_datetime: new Date().toISOString(),
-      author_ip: "",
+      author_ip: userIp,
     };
 
     axios.post(api, newPost)
       .then((response) => {
-        console.log(response)
         setPosts(prev => [response.data, ...prev])
         setInputContentValue("")
         setInputTitleValue("")
@@ -56,7 +52,6 @@ export const Home = () => {
         console.log(" 🔴 POST ERROR:" + error)
       })
       .finally(() => {
-        console.log("Axios Post");
         setIsPosting(false)
       })
   }
@@ -100,7 +95,12 @@ export const Home = () => {
       ) : (
         <React.Fragment>
           {posts.map((post) => (
-            <Card title={post.title} post={post} controls key={post.id}>
+            <Card
+              title={post.title}
+              post={post}
+              controls={post.username === username}
+              key={post.id}
+            >
               <div className="flex justify-between items-center gap-4">
                 <h1 className="text-lg font-bold text-gray-700">
                   @{post.username}

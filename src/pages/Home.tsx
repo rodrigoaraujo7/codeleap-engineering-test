@@ -8,11 +8,12 @@ import { Input } from "../components/Input"
 import { TextArea } from "../components/Textarea"
 
 import { useAuthProviderContext } from "../store/AuthProvider"
+import { usePostProviderContext } from "../store/PostProvider"
 
+import { v4 } from "uuid"
 import axios from "axios"
 
 import { TPost } from "../types/Post"
-import { usePostProviderContext } from "../store/PostProvider"
 
 export const Home = () => {
   const [inputTitleValue, setInputTitleValue] = useState<string>("");
@@ -36,6 +37,7 @@ export const Home = () => {
     setIsPosting(true)
 
     const newPost: TPost = {
+      id: v4(),
       username,
       title: inputTitleValue,
       content: inputContentValue,
@@ -97,8 +99,8 @@ export const Home = () => {
         <h1>Loading ...</h1>
       ) : (
         <React.Fragment>
-          {posts.map((post, index) => (
-            <Card title={post.title} controls key={index}>
+          {posts.map((post) => (
+            <Card title={post.title} post={post} controls key={post.id}>
               <div className="flex justify-between items-center gap-4">
                 <h1 className="text-lg font-bold text-gray-700">
                   @{post.username}

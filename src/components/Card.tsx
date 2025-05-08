@@ -3,19 +3,27 @@ import { ReactNode, useState } from "react"
 import { BlurContent } from "./BlurContent";
 import { FormCard } from "./FormCard";
 import { Button } from "./Button";
-
-import * as icon from "../assets/icons"
 import { Input } from "./Input";
 import { TextArea } from "./Textarea";
+
+import axios from "axios";
+
+import { usePostProviderContext } from "../store/PostProvider";
+
+import * as icon from "../assets/icons"
+
+import { TPost } from "../types/Post";
 
 type CardProps = {
   children: ReactNode;
   title: string;
   controls?: boolean;
+  post: TPost;
 }
 
 type ModalProps = {
-  closeModal: () => void
+  closeModal: () => void;
+  post: TPost;
 }
 
 export interface TModals {
@@ -75,12 +83,14 @@ export const Card = ({ ...props }: CardProps) => {
       {modals.delete && (
         <DeleteModal
           closeModal={closeModal}
+          post={props.post}
         />
       )}
 
       {modals.edit && (
         <EditModal
           closeModal={closeModal}
+          post={props.post}
         />
       )}
     </>
@@ -88,6 +98,19 @@ export const Card = ({ ...props }: CardProps) => {
 }
 
 const DeleteModal = ({ ...props }: ModalProps) => {
+  const {
+    setPosts, api
+  } = usePostProviderContext()
+
+  const deletePost = async () => {
+    try {
+      await axios.delete(`${api}${props.post.id}/`);
+      setPosts((prev) => prev.filter(post => post.id !== props.post.id))
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
+  }
+
   return (
     <BlurContent>
       <FormCard title="Are you sure you want to delete this item?">
@@ -103,7 +126,7 @@ const DeleteModal = ({ ...props }: ModalProps) => {
           <Button
             variant="contained"
             bg="bg-light-red"
-            onClick={props.closeModal}
+            onClick={deletePost}
           >
             Delete
           </Button>

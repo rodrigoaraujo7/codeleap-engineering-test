@@ -15,7 +15,14 @@ interface AuthContextProps {
 const AuthProviderContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>(() => {
+    const saved = localStorage.getItem("username");
+    try {
+      return saved ? JSON.parse(saved) : "";
+    } catch {
+      return "";
+    }
+  });
   const [userIp, setUserIp] = useState<string>("");
 
   const getUserIP = async () => {
@@ -28,6 +35,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // render user IP
   useEffect(() => {
     getUserIP()
   }, [])

@@ -21,6 +21,7 @@ export const SignIn = () => {
 
     if (username === "") return toast.error("Enter username to continue")
 
+    localStorage.setItem("username", JSON.stringify(username))
     return navigate("/")
   }
 

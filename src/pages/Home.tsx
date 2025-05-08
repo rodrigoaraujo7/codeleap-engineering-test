@@ -7,6 +7,8 @@ import { Card } from "../components/Card"
 import { Input } from "../components/Input"
 import { TextArea } from "../components/Textarea"
 import { Spinner } from "../components/Spinner"
+import { SkeletonCard } from "../components/skeletons/Card"
+import { SkeletonMainForm } from "../components/skeletons/MainForm"
 
 import { useAuthProviderContext } from "../store/AuthProvider"
 import { usePostProviderContext } from "../store/PostProvider"
@@ -17,7 +19,6 @@ import { toast } from "react-toastify"
 import { formatDistanceToNow } from "date-fns";
 
 import { TPost } from "../types/Post"
-import { SkeletonCard } from "../components/skeletons/Card"
 
 export const Home = () => {
   const [inputTitleValue, setInputTitleValue] = useState<string>("");
@@ -66,37 +67,41 @@ export const Home = () => {
 
   return (
     <Main>
-      <div className="p-6 rounded-2xl border-1 border-gray-600 flex flex-col gap-6">
-        <h1 className="text-(length:--title-size) font-bold text-black">
-          What's on your mind?
-        </h1>
+      {isFetching ? (
+        <SkeletonMainForm />
+      ) : (
+        <div className="p-6 rounded-2xl border-1 border-gray-600 flex flex-col gap-6">
+          <h1 className="text-(length:--title-size) font-bold text-black">
+            What's on your mind?
+          </h1>
 
-        <Input
-          label="Title"
-          id="title"
-          type="text"
-          placeholder="Hello world"
-          value={inputTitleValue}
-          onChange={(e) => setInputTitleValue(e.target.value)}
-        />
+          <Input
+            label="Title"
+            id="title"
+            type="text"
+            placeholder="Hello world"
+            value={inputTitleValue}
+            onChange={(e) => setInputTitleValue(e.target.value)}
+          />
 
-        <TextArea
-          label="Content"
-          id="content"
-          placeholder="Content here"
-          value={inputContentValue}
-          onChange={(e) => setInputContentValue(e.target.value)}
-        />
+          <TextArea
+            label="Content"
+            id="content"
+            placeholder="Content here"
+            value={inputContentValue}
+            onChange={(e) => setInputContentValue(e.target.value)}
+          />
 
-        <Button
-          variant="contained"
-          bg="bg-light-blue"
-          disabled={(inputTitleValue === "" || inputContentValue === "")}
-          onClick={handleNewPost}
-        >
-          {isPosting ? <Spinner color="text-white" /> : "Create"}
-        </Button>
-      </div>
+          <Button
+            variant="contained"
+            bg="bg-light-blue"
+            disabled={(inputTitleValue === "" || inputContentValue === "")}
+            onClick={handleNewPost}
+          >
+            {isPosting ? <Spinner color="text-white" /> : "Create"}
+          </Button>
+        </div>
+      )}
 
       {isFetching ? (
         <SkeletonCard />

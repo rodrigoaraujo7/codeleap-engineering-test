@@ -4,6 +4,8 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { FormCard } from "../components/FormCard";
 
+import { toast } from "react-toastify";
+
 import { useAuthProviderContext } from "../store/AuthProvider";
 
 export const SignIn = () => {
@@ -17,7 +19,7 @@ export const SignIn = () => {
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (username === "") return
+    if (username === "") return toast.error("Enter username to continue")
 
     return navigate("/")
   }

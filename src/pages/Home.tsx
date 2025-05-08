@@ -10,8 +10,9 @@ import { TextArea } from "../components/Textarea"
 import { useAuthProviderContext } from "../store/AuthProvider"
 import { usePostProviderContext } from "../store/PostProvider"
 
-import { v4 } from "uuid"
 import axios from "axios"
+import { v4 } from "uuid"
+import { toast } from "react-toastify"
 
 import { TPost } from "../types/Post"
 
@@ -29,7 +30,9 @@ export const Home = () => {
   } = usePostProviderContext();
 
   const handleNewPost = () => {
-    if (isPosting) return
+    if (isPosting) return toast.error("A request is already in progress")
+
+    if (inputTitleValue === "" || inputContentValue === "") return toast.error("Fill in the fields to create a post")
 
     setIsPosting(true)
 
@@ -47,9 +50,11 @@ export const Home = () => {
         setPosts(prev => [response.data, ...prev])
         setInputContentValue("")
         setInputTitleValue("")
+        toast.success("Post created successfully")
       })
       .catch((error) => {
         console.log(" 🔴 POST ERROR:" + error)
+        toast.error("Error creating post")
       })
       .finally(() => {
         setIsPosting(false)

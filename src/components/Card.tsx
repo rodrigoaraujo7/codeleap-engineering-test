@@ -7,6 +7,7 @@ import { Input } from "./Input";
 import { TextArea } from "./Textarea";
 
 import axios from "axios";
+import { toast } from "react-toastify"
 
 import { usePostProviderContext } from "../store/PostProvider";
 
@@ -98,17 +99,27 @@ export const Card = ({ ...props }: CardProps) => {
 }
 
 const DeleteModal = ({ ...props }: ModalProps) => {
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   const {
     setPosts, api
   } = usePostProviderContext()
 
   const deletePost = async () => {
+    setIsDeleting(true)
+
     try {
       await axios.delete(`${api}${props.post.id}/`);
       setPosts((prev) => prev.filter(post => post.id !== props.post.id))
+
+      props.closeModal();
+      toast.success("Post deleted successfully");
     } catch (error) {
       console.error("Delete error:", error);
+      toast.error("Error deleting post");
     }
+
+    setIsDeleting(false)
   }
 
   return (
@@ -128,7 +139,7 @@ const DeleteModal = ({ ...props }: ModalProps) => {
             bg="bg-light-red"
             onClick={deletePost}
           >
-            Delete
+            {isDeleting ? "Loading ..." : "Delete"}
           </Button>
         </div>
       </FormCard>
@@ -139,13 +150,16 @@ const DeleteModal = ({ ...props }: ModalProps) => {
 export const EditModal = ({ ...props }: ModalProps) => {
   const [inputTitleValue, setInputTitleValue] = useState<string>(props.post.title);
   const [inputContentValue, setInputContentValue] = useState<string>(props.post.content);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const {
     setPosts, api
   } = usePostProviderContext()
 
   const editPost = async () => {
-    if (inputTitleValue === "" || inputContentValue === "") return;
+    if (inputTitleValue === "" || inputContentValue === "") return toast.error("Fill in the fields to edit the post");
+
+    setIsEditing(true)
 
     const updatedPostData: TPost = {
       ...props.post,
@@ -161,9 +175,15 @@ export const EditModal = ({ ...props }: ModalProps) => {
           post.id === props.post.id ? { ...post, ...response.data } : post
         )
       );
+
+      props.closeModal();
+      toast.success("Post edited successfully")
     } catch (error) {
       console.log("Edit error: " + error)
+      toast.error("Error editing post")
     }
+
+    setIsEditing(false)
   }
 
   return (
@@ -202,7 +222,7 @@ export const EditModal = ({ ...props }: ModalProps) => {
               disabled={(inputTitleValue === "" || inputContentValue === "")}
               onClick={editPost}
             >
-              Save
+              {isEditing ? "Loading ..." : "Save"}
             </Button>
           </div>
         </div>

@@ -137,8 +137,34 @@ const DeleteModal = ({ ...props }: ModalProps) => {
 }
 
 export const EditModal = ({ ...props }: ModalProps) => {
-  const [inputTitleValue, setInputTitleValue] = useState<string>("");
-  const [inputContentValue, setInputContentValue] = useState<string>("");
+  const [inputTitleValue, setInputTitleValue] = useState<string>(props.post.title);
+  const [inputContentValue, setInputContentValue] = useState<string>(props.post.content);
+
+  const {
+    setPosts, api
+  } = usePostProviderContext()
+
+  const editPost = async () => {
+    if (inputTitleValue === "" || inputContentValue === "") return;
+
+    const updatedPostData: TPost = {
+      ...props.post,
+      title: inputTitleValue,
+      content: inputContentValue
+    }
+
+    try {
+      const response = await axios.patch(`${api}${props.post.id}/`, updatedPostData);
+
+      setPosts((prev) =>
+        prev.map((post) =>
+          post.id === props.post.id ? { ...post, ...response.data } : post
+        )
+      );
+    } catch (error) {
+      console.log("Edit error: " + error)
+    }
+  }
 
   return (
     <BlurContent>
@@ -173,7 +199,8 @@ export const EditModal = ({ ...props }: ModalProps) => {
             <Button
               variant="contained"
               bg="bg-light-green"
-              onClick={props.closeModal}
+              disabled={(inputTitleValue === "" || inputContentValue === "")}
+              onClick={editPost}
             >
               Save
             </Button>

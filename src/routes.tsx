@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 
 import { useAuthProviderContext } from "./store/AuthProvider";
 import { useEffect } from "react";
+import { PostProvider } from "./store/PostProvider";
 
 export const AppRouter = () => {
   const { username } = useAuthProviderContext()
@@ -17,7 +18,11 @@ export const AppRouter = () => {
 
   return (
     <Routes>
-      <Route index element={<Home />} />
+      <Route index element={
+        <PostProvider>
+          <Home />
+        </PostProvider>
+      } />
 
       <Route path="sign-in" element={<SignIn />} />
 

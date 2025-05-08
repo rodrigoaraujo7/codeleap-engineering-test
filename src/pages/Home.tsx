@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 import { Main } from "../layout/Main"
 
@@ -12,24 +12,28 @@ import { useAuthProviderContext } from "../store/AuthProvider"
 import axios from "axios"
 
 import { TPost } from "../types/Post"
+import { usePostProviderContext } from "../store/PostProvider"
 
 export const Home = () => {
-  const [posts, setPosts] = useState<TPost[]>([]);
   const [inputTitleValue, setInputTitleValue] = useState<string>("");
   const [inputContentValue, setInputContentValue] = useState<string>("");
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isPosting, setIsPosting] = useState<boolean>(false);
 
   const {
     username
   } = useAuthProviderContext();
 
-
-  const api = "https://dev.codeleap.co.uk/careers/";
+  const {
+    posts,
+    setPosts,
+    isFetching,
+    api
+  } = usePostProviderContext();
 
   const handleNewPost = () => {
-    if (isFetching) return
+    if (isPosting) return
 
-    setIsFetching(true)
+    setIsPosting(true)
 
     const newPost: TPost = {
       username,
@@ -51,22 +55,9 @@ export const Home = () => {
       })
       .finally(() => {
         console.log("Axios Post");
-        setIsFetching(false)
+        setIsPosting(false)
       })
   }
-
-  useEffect(() => {
-    axios.get(api)
-      .then((response) => {
-        setPosts(response.data.results)
-      })
-      .catch((error) => {
-        console.log(" 🔴 GET ERROR:" + error)
-      })
-      .finally(() => {
-        console.log("Axios Get");
-      })
-  }, [username])
 
   return (
     <Main>
@@ -98,27 +89,33 @@ export const Home = () => {
           disabled={(inputTitleValue === "" || inputContentValue === "")}
           onClick={handleNewPost}
         >
-          {isFetching ? "Loading ..." : "Create"}
+          {isPosting ? "Loading ..." : "Create"}
         </Button>
       </div>
 
-      {posts.map((post, index) => (
-        <Card title={post.title} controls key={index}>
-          <div className="flex justify-between items-center gap-4">
-            <h1 className="text-lg font-bold text-gray-700">
-              @{post.username}
-            </h1>
+      {isFetching ? (
+        <h1>Loading ...</h1>
+      ) : (
+        <React.Fragment>
+          {posts.map((post, index) => (
+            <Card title={post.title} controls key={index}>
+              <div className="flex justify-between items-center gap-4">
+                <h1 className="text-lg font-bold text-gray-700">
+                  @{post.username}
+                </h1>
 
-            <span className="text-lg font-normal text-gray-700">
-              25 minutes agos
-            </span>
-          </div>
+                <span className="text-lg font-normal text-gray-700">
+                  25 minutes agos
+                </span>
+              </div>
 
-          <p className="text-lg font-normal text-black mt-4">
-            {post.content}
-          </p>
-        </Card>
-      ))}
+              <p className="text-lg font-normal text-black mt-4">
+                {post.content}
+              </p>
+            </Card>
+          ))}
+        </React.Fragment>
+      )}
     </Main>
   )
 }

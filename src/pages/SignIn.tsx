@@ -26,30 +26,28 @@ export const SignIn = () => {
   }
 
   return (
-    <main className="h-screen flex justify-center items-center">
-      <form onSubmit={handleSignIn}>
-        <FormCard title="Welcome to CodeLeap network!">
-          <Input
-            label="Please enter your username"
-            id="username"
-            type="text"
-            placeholder="John doe"
-            className="mt-6 mb-4"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+    <form onSubmit={handleSignIn} className="h-screen flex justify-center items-center">
+      <FormCard title="Welcome to CodeLeap network!">
+        <Input
+          label="Please enter your username"
+          id="username"
+          type="text"
+          placeholder="John doe"
+          className="mt-6 mb-4"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-          <Button
-            disabled={username === ""}
-            onClick={handleSignIn}
-            variant="contained"
-            bg="bg-light-blue"
-            color="text-white"
-          >
-            ENTER
-          </Button>
-        </FormCard>
-      </form>
-    </main>
+        <Button
+          disabled={username === ""}
+          onClick={handleSignIn}
+          variant="contained"
+          bg="bg-light-blue"
+          color="text-white"
+        >
+          ENTER
+        </Button>
+      </FormCard>
+    </form>
   )
 }

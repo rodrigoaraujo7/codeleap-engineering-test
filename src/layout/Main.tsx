@@ -2,6 +2,8 @@ import { ReactNode } from "react"
 
 import { useAuthProviderContext } from "../store/AuthProvider"
 
+import * as icon from "../assets/icons/"
+
 type MainProps = {
   children: ReactNode
 }
@@ -20,7 +22,10 @@ export const Main = ({ ...props }: MainProps) => {
         <header className="w-full h-20 px-9 flex items-center justify-between bg-light-blue border-b-1 border-gray-600">
           <h1 className="font-bold text-(length:--title-size) text-white">CodeLeap Network</h1>
 
-          <h1 onClick={logout}>sair</h1>
+
+          <button onClick={logout} className="p-2 rounded-lg cursor-pointer transition-colors hover:bg-secondary-light-blue">
+            <icon.Logout />
+          </button>
         </header>
 
         <div className="flex flex-col gap-6 p-6 h-[calc(100dvh-80px)] overflow-auto">

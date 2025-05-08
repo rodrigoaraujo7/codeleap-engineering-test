@@ -13,6 +13,7 @@ import { usePostProviderContext } from "../store/PostProvider"
 import axios from "axios"
 import { v4 } from "uuid"
 import { toast } from "react-toastify"
+import { formatDistanceToNow } from "date-fns";
 
 import { TPost } from "../types/Post"
 
@@ -106,14 +107,20 @@ export const Home = () => {
               controls={post.username === username}
               key={post.id}
             >
-              <div className="flex justify-between items-center gap-4">
-                <h1 className="text-lg font-bold text-gray-700">
+              <div className="flex flex-col gap-4 md:justify-between md:items-center md:flex-row">
+                <h1 className="text-lg font-bold text-gray-700 truncate max-md:w-full md:w-3/4">
                   @{post.username}
                 </h1>
 
-                <span className="text-lg font-normal text-gray-700">
-                  25 minutes agos
-                </span>
+                {post.created_datetime ? (
+                  <span className="text-lg font-normal text-gray-700">
+                    {formatDistanceToNow(new Date(post.created_datetime), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                ) : (
+                  <span className="text-lg font-normal text-gray-700">Unknown date</span>
+                )}
               </div>
 
               <p className="text-lg font-normal text-black mt-4">

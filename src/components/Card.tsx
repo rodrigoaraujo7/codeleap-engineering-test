@@ -5,10 +5,10 @@ import { FormCard } from "./FormCard";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { TextArea } from "./Textarea";
-import { Spinner } from "./Spinner";
 
 import axios from "axios";
 import { toast } from "react-toastify"
+import { AnimatePresence } from "motion/react";
 
 import { usePostProviderContext } from "../store/PostProvider";
 
@@ -82,19 +82,23 @@ export const Card = ({ ...props }: CardProps) => {
         </div>
       </div>
 
-      {modals.delete && (
-        <DeleteModal
-          closeModal={closeModal}
-          post={props.post}
-        />
-      )}
+      <AnimatePresence>
+        {modals.delete && (
+          <DeleteModal
+            closeModal={closeModal}
+            post={props.post}
+          />
+        )}
+      </AnimatePresence>
 
-      {modals.edit && (
-        <EditModal
-          closeModal={closeModal}
-          post={props.post}
-        />
-      )}
+      <AnimatePresence>
+        {modals.edit && (
+          <EditModal
+            closeModal={closeModal}
+            post={props.post}
+          />
+        )}
+      </AnimatePresence>
     </>
   )
 }
@@ -139,8 +143,9 @@ const DeleteModal = ({ ...props }: ModalProps) => {
             variant="contained"
             bg="bg-light-red"
             onClick={deletePost}
+            isFetching={isDeleting}
           >
-            {isDeleting ? <Spinner color="text-white" /> : "Delete"}
+            Delete
           </Button>
         </div>
       </FormCard>
@@ -222,8 +227,9 @@ export const EditModal = ({ ...props }: ModalProps) => {
               bg="bg-light-green"
               disabled={(inputTitleValue === "" || inputContentValue === "")}
               onClick={editPost}
+              isFetching={isEditing}
             >
-              {isEditing ? <Spinner color="text-white" /> : "Save"}
+              Save
             </Button>
           </div>
         </div>

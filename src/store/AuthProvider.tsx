@@ -25,18 +25,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   });
   const [userIp, setUserIp] = useState<string>("");
 
-  const getUserIP = async () => {
-    try {
-      const response = await axios.get("https://api.ipify.org?format=json");
-      setUserIp(response.data.ip)
-    } catch (error) {
-      console.error("Erro ao obter IP:", error);
-      return "";
-    }
-  };
-
-  // render user IP
   useEffect(() => {
+    const getUserIP = async () => {
+      try {
+        const {
+          data
+        } = await axios.get("https://api.ipify.org?format=json");
+
+        setUserIp(data.ip)
+      } catch (error) {
+        console.error("Erro ao obter IP:", error);
+        return "";
+      }
+    };
+
     getUserIP()
   }, [])
 

@@ -6,7 +6,6 @@ import { Button } from "../components/Button"
 import { Card } from "../components/Card"
 import { Input } from "../components/Input"
 import { TextArea } from "../components/Textarea"
-import { Spinner } from "../components/Spinner"
 import { SkeletonCard } from "../components/skeletons/Card"
 import { SkeletonMainForm } from "../components/skeletons/MainForm"
 
@@ -97,8 +96,9 @@ export const Home = () => {
             bg="bg-light-blue"
             disabled={(inputTitleValue === "" || inputContentValue === "")}
             onClick={handleNewPost}
+            isFetching={isPosting}
           >
-            {isPosting ? <Spinner color="text-white" /> : "Create"}
+            Create
           </Button>
         </div>
       )}

@@ -1,10 +1,11 @@
+import { useEffect } from "react";
+
 import { Route, Routes, useNavigate } from "react-router";
 
 import { SignIn } from "./pages/SignIn";
 import { Home } from "./pages/Home";
 
 import { useAuthProviderContext } from "./store/AuthProvider";
-import { useEffect } from "react";
 import { PostProvider } from "./store/PostProvider";
 
 export const AppRouter = () => {
@@ -14,7 +15,8 @@ export const AppRouter = () => {
 
   useEffect(() => {
     if (username === "") navigate("/sign-in")
-  }, [navigate, username])
+    // eslint-disable-next-line
+  }, [username])
 
   return (
     <Routes>

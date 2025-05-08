@@ -5,6 +5,7 @@ import { Button } from "../components/Button";
 import { FormCard } from "../components/FormCard";
 
 import { toast } from "react-toastify";
+import { motion } from 'motion/react'
 
 import { useAuthProviderContext } from "../store/AuthProvider";
 
@@ -26,7 +27,7 @@ export const SignIn = () => {
   }
 
   return (
-    <form onSubmit={handleSignIn} className="h-screen flex justify-center items-center">
+    <motion.form exit={{ opacity: 0 }} onSubmit={handleSignIn} className="h-screen flex justify-center items-center">
       <FormCard title="Welcome to CodeLeap network!">
         <Input
           label="Please enter your username"
@@ -48,6 +49,6 @@ export const SignIn = () => {
           ENTER
         </Button>
       </FormCard>
-    </form>
+    </motion.form>
   )
 }

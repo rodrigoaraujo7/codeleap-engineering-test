@@ -17,6 +17,7 @@ import { toast } from "react-toastify"
 import { formatDistanceToNow } from "date-fns";
 
 import { TPost } from "../types/Post"
+import { SkeletonCard } from "../components/skeletons/Card"
 
 export const Home = () => {
   const [inputTitleValue, setInputTitleValue] = useState<string>("");
@@ -98,7 +99,7 @@ export const Home = () => {
       </div>
 
       {isFetching ? (
-        <h1>Loading ...</h1>
+        <SkeletonCard />
       ) : (
         <React.Fragment>
           {posts.map((post) => (

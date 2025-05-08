@@ -115,7 +115,7 @@ export const Home = () => {
               key={post.id}
             >
               <div className="flex flex-col gap-4 md:justify-between md:items-center md:flex-row">
-                <h1 className="text-lg font-bold text-gray-700 truncate max-md:w-full md:w-3/4">
+                <h1 className="text-lg font-bold text-gray-700 truncate max-md:w-full md:w-1/2">
                   @{post.username}
                 </h1>
 
